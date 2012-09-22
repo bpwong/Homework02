@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 
 # Read in data from text file
 dt = [('measured',np.float64),('reference',np.float64)]
-temps = np.loadtxt('USB-TEMP-EPCOS-Calib-Test - 2012 09 21_01.txt',dt)
+temps = np.loadtxt('txt/USB-TEMP-EPCOS-Calib-Test - 2012 09 21_01.txt',dt, skiprows=1)
 title = 'Temperature Measurements'
 
 # Generate time
@@ -24,12 +24,12 @@ f, (ax1, ax2) = plt.subplots(1,2)
 ax1.plot(temps['reference'],temps['measured'],'x',c='b')
 fit = ax1.plot(range,coef[1] + coef[0]*range)
 plt.setp(fit,linewidth=2,c='g')
-ax1.set_xlabel('$T_{thermocouple}$')
-ax1.set_ylabel('$T_{thermistor}$')
+ax1.set_xlabel('T$_{thermocouple}$')
+ax1.set_ylabel('T$_{thermistor}$')
 
 # Plot second subplot
-ax2.plot(t,temps['reference'],label='$T_{thermocouple}$')
-ax2.plot(t,temps['measured'],label='$T_{thermistor}$')
+ax2.plot(t,temps['reference'],label='T$_{thermocouple}$')
+ax2.plot(t,temps['measured'],label='T$_{thermistor}$')
 ax2.legend(loc='best')
 ax2.set_xlabel('Time (s)')
 ax2.set_ylabel('T (C)')
