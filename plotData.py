@@ -1,9 +1,12 @@
 #/usr/bin/env python
 import numpy as np
 import matplotlib.pyplot as plt
+from matplotlib import rc
 '''
     plotData generates a plot using the provided data files:
     ny_temps.txt, yahoo_data.txt, google_data.txt
+    
+    An image of the plot generated can be found at NY_Google_Yahoo.png
 '''
 
 # Read in data from text file
@@ -20,7 +23,9 @@ ln1 = ax1.plot(goog['date'],goog['val'], label='Google Stock Value')
 ln2 = ax2.plot(ny['date'],ny['val'], '--', c='r',label = 'NY Mon. High Temp')
 ln3 = ax1.plot(yahoo['date'],yahoo['val'], c='purple',label='Yahoo! Stock Value')
 
-plt.title('New York Temperature, Google, and Yahoo!')
+# usetex demo: http://matplotlib.org/examples/pylab_examples/usetex_demo.html
+rc('text', usetex = True)
+plt.title(r'\bf{New York, Temperature, Google, and Yahoo!}',fontsize=20)
 
 lns = ln3+ln1+ln2
 labs = [l.get_label() for l in lns]
@@ -41,31 +46,5 @@ ax2.tick_params(labelsize=10)
 ax2.autoscale(axis='x',tight=True)
 ax2.set_xlim(48800,55600)
 ax2.xaxis.tick_bottom()
-comm = '''
-# Generate time
-t = [x * 0.5 for x in range(0, len(temps['reference']))]
 
-# Generate Coefficients using Least Squares
-A = np.array([temps['reference'], np.ones(len(temps['reference']))])
-coef = np.linalg.lstsq(A.T,temps['measured'])[0]
-range = np.linspace(min(temps['reference']), max(temps['reference']))
-
-
-
-# Plot first subplot
-ax1.plot(temps['reference'],temps['measured'],'x',c='b')
-fit = ax1.plot(range,coef[1] + coef[0]*range)
-plt.setp(fit,linewidth=2,c='g')
-ax1.set_xlabel('T$_{thermocouple}$')
-ax1.set_ylabel('T$_{thermistor}$')
-
-# Plot second subplot
-ax2.plot(t,temps['reference'],label='T$_{thermocouple}$')
-ax2.plot(t,temps['measured'],label='T$_{thermistor}$')
-ax2.legend(loc='best')
-ax2.set_xlabel('Time (s)')
-ax2.set_ylabel('T (C)')
-
-# Show the plot
-    '''
 plt.show()
