@@ -20,13 +20,7 @@ dt = [('s_len',np.float32),('s_wid',np.float32),('p_len',np.float32),('p_wid',np
 flowers = np.loadtxt('txt/iris_data.txt',dt,skiprows=1)
 
 # Set the color code
-colors = []
-for f in flowers[flowers['spec']=='setosa']:
-    colors.append('r')
-for f in flowers[flowers['spec']=='versicolor']:
-    colors.append('g')
-for f in flowers[flowers['spec']=='virginica']:
-    colors.append('b')
+colors = ['r' if f == 'setosa' else 'g' if f == 'versicolor' else 'b' for f in flowers['spec']]
 
 # Plot Data and Label the Plots
 s = ['s_len', 's_wid', 'p_len', 'p_wid']
@@ -49,6 +43,7 @@ class RectBrush:
         self.xlast, self.ylast = 0, 0
         self.active_ax = axsub[0][0]
         self.click = False
+        self.gray = False
     
     def onclick(self,event):
         '''
@@ -113,7 +108,9 @@ class RectBrush:
             over a rectangle(s).  If so, remove the rectangle(s) from the
             current axis.
         '''
-        if event.key not in ('d', 'D'): return
+        if event.key in ('a','A'):
+            self.updateaxes()
+        elif event.key not in ('d', 'D'): return
         #print event.xdata, event.ydata
         
         to_remove = [patch for patch in self.active_ax.patches if patch.contains(event)[0]]
@@ -121,6 +118,25 @@ class RectBrush:
             self.active_ax.patches.remove(patch)
         
         fig.canvas.draw()
+
+    def updateaxes(self):
+        # Set the color code
+        
+        if not self.gray:
+            colors = ['gray' if f == 'setosa' else 'y' if f == 'versicolor' else 'm' for f in flowers['spec']]
+            self.gray = not self.gray
+        else:
+            colors = ['r' if f == 'setosa' else 'g' if f == 'versicolor' else 'b' for f in flowers['spec']]
+            self.gray = not self.gray
+        
+        # Update Data
+        s = ['s_len', 's_wid', 'p_len', 'p_wid']
+        
+        for i in range(0,4):
+            for j in range(0,4):
+                axsub[i][j].scatter(flowers[s[j]],flowers[s[i]],c=colors)
+            
+            
 
 brush = RectBrush()        
 

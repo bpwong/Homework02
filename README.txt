@@ -35,3 +35,10 @@ as the data selection process has not been
 finished -- only rectangles can be drawn 
 and cleared if 'd' or 'D' is pressed while 
 the mouse is over a rectangle(s).
+
+Currently, the colors can be changed by
+pressing 'a' or 'A'.  However, to complete the 
+brushing, my next step was to look into the 
+contains() function and try to use that to 
+gather the points within a rectangle patch.
+Then I could update the colors accordingly.
